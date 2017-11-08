@@ -119,4 +119,10 @@ public class EventController extends Controller {
         return new Address(street1, street2, city, state, zip, country);
     }
 
+    public Result viewAllParticipants() {
+        // TODO
+        participantDataConnector.getAllParticipants();
+        return ok();
+    }
+
 }
