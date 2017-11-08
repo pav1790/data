@@ -8,20 +8,21 @@ public class Participant extends Person {
     private String emergencyContact;
     private String emergencyContactNumber;
     private String medicalConditions;
-    private String eventReferral;
+    private String eventReferralId;
+    private String runnerBibNumber;
 
 
-    public Participant(String firstName, String lastName, int day, String month, int year, String email,
-                       String mobileNumber, String gender, String shirtSize, String estFinishTime, boolean wheelChair,
-                       String emergencyContact, String emergencyContactNumber, String medicalConditions, String eventReferral) {
-        super(firstName, lastName, day, month, year, email, mobileNumber, gender);
+    public Participant(String firstName, String lastName, DateOfBirth dateOfBirth, String email,
+                       String mobileNumber, String gender, Address address, String shirtSize, String estFinishTime, boolean wheelChair,
+                       String emergencyContact, String emergencyContactNumber, String medicalConditions, String eventReferralId) {
+        super(firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
         this.shirtSize = shirtSize;
         this.estFinishTime = estFinishTime;
         this.wheelChair = wheelChair;
         this.emergencyContact = emergencyContact;
         this.emergencyContactNumber = emergencyContactNumber;
         this.medicalConditions = medicalConditions;
-        this.eventReferral = eventReferral;
+        this.eventReferralId = eventReferralId;
     }
 
     public String getShirtSize() {
@@ -48,7 +49,15 @@ public class Participant extends Person {
         return medicalConditions;
     }
 
-    public String getEventReferral() {
-        return eventReferral;
+    public String getEventReferralId() {
+        return eventReferralId;
+    }
+
+    public String getRunnerBibNumber() {
+        return runnerBibNumber;
+    }
+
+    public void setRunnerBibNumber(String runnerBibNumber) {
+        this.runnerBibNumber = runnerBibNumber;
     }
 }

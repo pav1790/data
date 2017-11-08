@@ -9,7 +9,11 @@ public class DateOfBirth {
     private Month month;
     private int year;
 
-    DateOfBirth(int day, String month, int year) {
+    public DateOfBirth(String day, String month, String year) {
+        this(Integer.getInteger(day), month, Integer.getInteger(year));
+    }
+
+    public DateOfBirth(int day, String month, int year) {
         if (day < 1 || day > 30) {
             throw new RuntimeException();
         } else {

@@ -3,22 +3,18 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET     /                               controllers.HomeController.index
 
 # Events
-GET     /events                     controllers.EventController.index
-POST    /events/create              controllers.EventController.createEvent
+GET     /events                         controllers.EventController.index
+POST    /events/create                  controllers.EventController.createEvent
 
-GET     /events/:id                 controllers.EventController.getEventData(id)
-POST    /events/:id                 controllers.EventController.editEventData(id)
+GET     /events/:id                     controllers.EventController.getEventData(id)
+POST    /events/:id                     controllers.EventController.editEventData(id)
 
-GET     /events/:id/participants    controllers.EventController.getParticipantList(id)
-POST    /events/:id/participants    controllers.EventController.addParticipant(id)
-
-# Participant Registration
-GET     /participants               controllers.ParticipantController.index
-POST    /participants/register      controllers.ParticipantController.register
-GET     /participants/:id           controllers.ParticipantController.getParticipant(id)
+GET     /events/:id/participants        controllers.EventController.getParticipantList(id)
+POST    /events/:id/participants        controllers.EventController.addParticipant(id)
+GET     /events/:id/participants/:id    controllers.EventController.getParticipant(id)
 
 
 # Map static resources from the /public folder to the /assets URL path

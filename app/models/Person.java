@@ -1,6 +1,11 @@
 package models;
 
-public class Person {
+import helpers.IDMaker;
+
+/**
+ * Contains data on a typical person
+ */
+public abstract class Person {
 
     private final String id;
     private String firstName;
@@ -11,15 +16,14 @@ public class Person {
     private int mobileNumber;
     private char gender;
 
-    public Person(String firstName, String lastName, int day, String month, int year, String email, String mobileNumber, String gender,
-                  String street1, String street2, String city, String state, int zip, String country) {
-        this.id = "1";
+    public Person(String firstName, String lastName, DateOfBirth dateOfBirth, String email, String mobileNumber, String gender, Address address) {
+        this.id = IDMaker.INSTANCE.getNewID();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.dateOfBirth = new DateOfBirth(day, month, year);
-        this.address = new Address(street1, street2, city, state, zip, country);
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
         this.email = email;
-        mobileNumber = mobileNumber.replaceAll("-", ""); // TODO - fix regex for any symbol
+        mobileNumber = mobileNumber.replaceAll("-\\(\\)", ""); // TODO - fix regex for any symbol
         this.mobileNumber = Integer.parseInt(mobileNumber);
         this.gender = gender.charAt(0);
     }
