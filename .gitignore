@@ -2,3 +2,4 @@
 target/
 logs/application.log
 logs/
+project/project/

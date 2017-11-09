@@ -12,8 +12,9 @@ public class ParticipantDetails {
     private String runnerBibNumber;
 
 
-    public ParticipantDetails(String shirtSize, String estFinishTime, boolean wheelChair, String emergencyContact,
+    public ParticipantDetails(String eventReferralId, String shirtSize, String estFinishTime, boolean wheelChair, String emergencyContact,
                               String emergencyContactNumber, String medicalConditions) {
+        this.eventReferralId = eventReferralId;
         this.shirtSize = shirtSize;
         this.estFinishTime = estFinishTime;
         this.wheelChair = wheelChair;

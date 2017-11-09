@@ -1,5 +1,6 @@
 package dataconnectors;
 
+import models.Address;
 import models.Organizer;
 
 import java.util.HashMap;
@@ -9,17 +10,19 @@ import java.util.Map;
 public enum OrganizerDataConnector {
     INSTANCE;
 
-    private Map<String, Organizer> catalog;
+    private Map<String, Organizer> catalog = new HashMap<>();
 
     public boolean registerOrganizer(Organizer organizer) {
-        if (catalog == null) {
-            catalog = new HashMap<>();
-        }
         catalog.put(organizer.getId(), organizer);
         return true;
     }
 
     public Map<String, Organizer> getAllOrganizers() {
+        if (catalog.isEmpty()) {
+            Address sampleAddress = new Address("Street 1", "Street2", "City", "OH", 43065, "US");
+            Organizer organizer = new Organizer("Sample", "Organizer", "sampleorganizer@email.com", "5555555555", sampleAddress);
+            registerOrganizer(organizer);
+        }
         return catalog;
     }
 

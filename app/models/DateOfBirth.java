@@ -33,4 +33,15 @@ public class DateOfBirth {
         }
     }
 
+    public int getDay() {
+        return day;
+    }
+
+    public Month getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
 }

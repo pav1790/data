@@ -44,15 +44,15 @@ public class EventController extends Controller {
 
         Organizer organizer = organizerDataConnector.getOrganizer(request().getQueryString("organizer"));
 
-        int participantCap = Integer.parseInt(request().getQueryString("cap"));
+        int participantCap = Integer.parseInt(request().getQueryString("participant_cap"));
 
         Map<String, Double> eventOptions = new HashMap<String, Double>();
         /** TODO - create options for each one found
         *      example: {[5k, $40], [10k, $60]}
         * */
 
-        Event event = new Event(title, address, organizer, participantCap, eventOptions);
-        eventDataConnector.creatEevent(event);
+        Event event = new Event(title, address, organizer.getId(), participantCap, eventOptions);
+        eventDataConnector.creatEvent(event);
         return ok();
     }
 
@@ -67,6 +67,11 @@ public class EventController extends Controller {
         return ok();
     }
 
+    /**
+     * Returns all participants in event
+     * @param id Event ID
+     * @return
+     */
     public Result getParticipantList(String id) {
         // TODO - return the participant list for the given event
         List<String> participantIdList = eventDataConnector.getEvent(id).getParticipantIdList();
@@ -110,12 +115,12 @@ public class EventController extends Controller {
     }
 
     private Address createAddress(Request request) {
-        String street1 = request().getQueryString("street1");
-        String street2 = request().getQueryString("street2");
-        String city = request().getQueryString("city");
-        String state = request().getQueryString("state");
-        int zip = Integer.parseInt(request().getQueryString("zip"));
-        String country = request().getQueryString("country");
+        String street1 = request.getQueryString("street1");
+        String street2 = request.getQueryString("street2");
+        String city = request.getQueryString("city");
+        String state = request.getQueryString("state");
+        int zip = Integer.parseInt(request.getQueryString("zip"));
+        String country = request.getQueryString("country");
         return new Address(street1, street2, city, state, zip, country);
     }
 

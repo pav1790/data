@@ -51,7 +51,7 @@ public class Person {
 
     public boolean addEventDetails(String eventReferralId, String shirtSize, String estFinishTime, boolean wheelChair,
                                    String emergencyContact, String emergencyContactNumber, String medicalConditions) {
-        ParticipantDetails participantDetails = new ParticipantDetails(shirtSize, estFinishTime, wheelChair, emergencyContact, emergencyContactNumber, medicalConditions);
+        ParticipantDetails participantDetails = new ParticipantDetails(eventReferralId, shirtSize, estFinishTime, wheelChair, emergencyContact, emergencyContactNumber, medicalConditions);
         eventDetails.put(eventReferralId, participantDetails);
         return true;
     }

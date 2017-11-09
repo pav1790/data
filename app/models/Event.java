@@ -11,17 +11,17 @@ public class Event {
     private String id;
     private String title;
     private Address address;
-    private Organizer organizer;
+    private String organizerId;
     private int participantCap;
     private Map<String, Double> eventOptions;
     private final String editKey = "secretKey";
     private List<String> participantIds;
 
-    public Event(String title, Address address, Organizer organizer, int participantCap, Map<String, Double> eventOptions) {
+    public Event(String title, Address address, String organizerId, int participantCap, Map<String, Double> eventOptions) {
         this.id = IDMaker.INSTANCE.getNewID();
         this.title = title;
         this.address = address;
-        this.organizer = organizer;
+        this.organizerId = organizerId;
         this.participantCap = participantCap;
         this.eventOptions = eventOptions;
         participantIds = new ArrayList<>();
@@ -39,8 +39,8 @@ public class Event {
         return address;
     }
 
-    public Organizer getOrganizer() {
-        return organizer;
+    public String getOrganizerId() {
+        return organizerId;
     }
 
     public int getParticipantCap() {
