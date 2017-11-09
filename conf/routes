@@ -17,6 +17,7 @@ POST    /events/:id/participants        controllers.EventController.addParticipa
 GET     /events/:id/participants/:id    controllers.EventController.getParticipant(id)
 
 GET     /participants                   controllers.EventController.viewAllParticipants
+GET     /organizers                     controllers.EventController.viewAllOrganizers
 
 
 # Map static resources from the /public folder to the /assets URL path

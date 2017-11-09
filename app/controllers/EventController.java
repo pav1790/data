@@ -122,7 +122,12 @@ public class EventController extends Controller {
     public Result viewAllParticipants() {
         // TODO
         participantDataConnector.getAllParticipants();
-        return ok();
+        return ok(views.html.participantindex.render());
     }
 
+    public Result viewAllOrganizers() {
+        // TODO
+        organizerDataConnector.getAllOrganizers();
+        return ok(views.html.organizerindex.render());
+    }
 }
