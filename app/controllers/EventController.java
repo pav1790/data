@@ -30,14 +30,10 @@ public class EventController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index() {
-        // TODO - show list of events
-        // TODO - make links to create event form
-        JsonNode stuff = Json.toJson(eventDataConnector.getAllEvents());
         return ok(views.html.eventindex.render());
     }
 
     public Result createEvent() {
-        // TODO - user response to get info on event being created
         String title = request().getQueryString("title");
 
         Address address = createAddress(request());
@@ -130,9 +126,4 @@ public class EventController extends Controller {
         return ok(views.html.participantindex.render());
     }
 
-    public Result viewAllOrganizers() {
-        // TODO
-        organizerDataConnector.getAllOrganizers();
-        return ok(views.html.organizerindex.render());
-    }
 }

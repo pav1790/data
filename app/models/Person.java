@@ -17,7 +17,7 @@ public class Person {
     private Address address;
     private String email;
     private int mobileNumber;
-    private char gender;
+    private String gender;
     private Map<String, ParticipantDetails> eventDetails;
 
     /**
@@ -39,7 +39,7 @@ public class Person {
         this.email = email;
         mobileNumber = mobileNumber.replaceAll("-\\(\\)", ""); // TODO - fix regex for any symbol
         this.mobileNumber = Integer.parseInt(mobileNumber);
-        this.gender = gender.charAt(0);
+        this.gender = gender;
         eventDetails = new HashMap<>();
     }
 
@@ -80,7 +80,7 @@ public class Person {
         return mobileNumber;
     }
 
-    public char getGender() {
+    public String getGender() {
         return gender;
     }
 }
