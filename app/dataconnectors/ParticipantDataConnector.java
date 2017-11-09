@@ -1,6 +1,7 @@
 package dataconnectors;
 
-import models.Participant;
+import models.ParticipantDetails;
+import models.Person;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,9 +12,9 @@ import java.util.Map;
 public enum ParticipantDataConnector {
     INSTANCE;
 
-    private Map<String, Participant> catalog;
+    private Map<String, Person> catalog;
 
-    public boolean registerParticipant(Participant participant) {
+    public boolean registerParticipant(Person participant) {
         if (catalog == null) {
             catalog = new HashMap<>();
         }
@@ -21,20 +22,20 @@ public enum ParticipantDataConnector {
         return true;
     }
 
-    public Map<String, Participant> getAllParticipants() {
+    public Map<String, Person> getAllParticipants() {
         return catalog;
     }
 
-    public Participant getParticipant(Participant participant) {
+    public Person getParticipant(Person participant) {
         return catalog.get(participant.getId());
     }
 
-    public Participant getParticipant(String id) {
+    public Person getParticipant(String id) {
         return catalog.get(id);
     }
 
-    public List<Participant> getParticipantList(List<String> participantIds) {
-        List<Participant> participantsList = new ArrayList<>();
+    public List<Person> getParticipantList(List<String> participantIds) {
+        List<Person> participantsList = new ArrayList<>();
         for (String id : participantIds) {
             participantsList.add(getParticipant(id));
         }
@@ -42,9 +43,9 @@ public enum ParticipantDataConnector {
         return participantsList;
     }
 
-    public Participant getParticipantViaEmail(String email) {
+    public Person getParticipantViaEmail(String email) {
         for (String participantId : catalog.keySet()) {
-            Participant participant = catalog.get(participantId);
+            Person participant = catalog.get(participantId);
             if (participant.getEmail().equalsIgnoreCase(email)) {
                 return participant;
             }

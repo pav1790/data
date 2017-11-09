@@ -51,7 +51,7 @@ public class Event {
         return eventOptions;
     }
 
-    public boolean registerParticipant(Participant participant) {
+    public boolean registerParticipant(Person participant) {
         if (participantIds.contains(participant.getId())){
             return false;
         }

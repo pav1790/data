@@ -1,7 +1,8 @@
 package dataconnectors;
 
 import models.Event;
-import models.Participant;
+import models.ParticipantDetails;
+import models.Person;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public enum EventDataConnector {
         return catalog.get(id);
     }
 
-    public boolean registerParticipant(String eventReferralId, Participant participant) {
+    public boolean registerParticipant(String eventReferralId, Person participant) {
         Event event = catalog.get(eventReferralId);
         return event.registerParticipant(participant);
     }

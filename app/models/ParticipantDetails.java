@@ -1,6 +1,6 @@
 package models;
 
-public class Participant extends Person {
+public class ParticipantDetails {
 
     private String shirtSize;
     private String estFinishTime;
@@ -12,17 +12,14 @@ public class Participant extends Person {
     private String runnerBibNumber;
 
 
-    public Participant(String firstName, String lastName, DateOfBirth dateOfBirth, String email,
-                       String mobileNumber, String gender, Address address, String shirtSize, String estFinishTime, boolean wheelChair,
-                       String emergencyContact, String emergencyContactNumber, String medicalConditions, String eventReferralId) {
-        super(firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
+    public ParticipantDetails(String shirtSize, String estFinishTime, boolean wheelChair, String emergencyContact,
+                              String emergencyContactNumber, String medicalConditions) {
         this.shirtSize = shirtSize;
         this.estFinishTime = estFinishTime;
         this.wheelChair = wheelChair;
         this.emergencyContact = emergencyContact;
         this.emergencyContactNumber = emergencyContactNumber;
         this.medicalConditions = medicalConditions;
-        this.eventReferralId = eventReferralId;
     }
 
     public String getShirtSize() {

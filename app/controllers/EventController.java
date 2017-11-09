@@ -70,7 +70,7 @@ public class EventController extends Controller {
     public Result getParticipantList(String id) {
         // TODO - return the participant list for the given event
         List<String> participantIdList = eventDataConnector.getEvent(id).getParticipantIdList();
-        List<Participant> participantList = participantDataConnector.getParticipantList(participantIdList);
+        List<Person> participantList = participantDataConnector.getParticipantList(participantIdList);
         return ok();
     }
 
@@ -78,7 +78,7 @@ public class EventController extends Controller {
         // Person info
         String eventReferral = request().getQueryString("eventReferral");
         String email = request().getQueryString("email");
-        Participant participant = participantDataConnector.getParticipantViaEmail(email);
+        Person participant = participantDataConnector.getParticipantViaEmail(email);
         if (participant == null) {
 
             String firstName = request().getQueryString("firstname");
@@ -95,7 +95,7 @@ public class EventController extends Controller {
             String medicalConditions = request().getQueryString("medicalConditions");
 
 
-            participant = new Participant(firstName, lastName, dateOfBirth, email,
+            participant = new Person(firstName, lastName, dateOfBirth, email,
                     mobileNumber, gender, address, shirtSize, estFinishTime, Boolean.getBoolean(wheelChair),
                     emergencyContact, emergencyContactNumber, medicalConditions, eventReferral);
         } else {

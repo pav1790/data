@@ -2,10 +2,13 @@ package models;
 
 import helpers.IDMaker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Contains data on a typical person
  */
-public abstract class Person {
+public class Person {
 
     private final String id;
     private String firstName;
@@ -15,7 +18,18 @@ public abstract class Person {
     private String email;
     private int mobileNumber;
     private char gender;
+    private Map<String, ParticipantDetails> eventDetails;
 
+    /**
+     * Used for keeping track of personal data on participants and event organizers
+     * @param firstName
+     * @param lastName
+     * @param dateOfBirth
+     * @param email
+     * @param mobileNumber
+     * @param gender
+     * @param address
+     */
     public Person(String firstName, String lastName, DateOfBirth dateOfBirth, String email, String mobileNumber, String gender, Address address) {
         this.id = IDMaker.INSTANCE.getNewID();
         this.firstName = firstName;
@@ -26,6 +40,20 @@ public abstract class Person {
         mobileNumber = mobileNumber.replaceAll("-\\(\\)", ""); // TODO - fix regex for any symbol
         this.mobileNumber = Integer.parseInt(mobileNumber);
         this.gender = gender.charAt(0);
+        eventDetails = new HashMap<>();
+    }
+
+    public Person(String firstName, String lastName, DateOfBirth dateOfBirth, String email, String mobileNumber, String gender, Address address,
+                  String shirtSize, String estFinishTime, boolean wheelChair, String emergencyContact, String emergencyContactNumber, String medicalConditions, String eventReferralId) {
+        this(firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
+        addEventDetails(eventReferralId, shirtSize, estFinishTime, wheelChair, emergencyContact, emergencyContactNumber, medicalConditions);
+    }
+
+    public boolean addEventDetails(String eventReferralId, String shirtSize, String estFinishTime, boolean wheelChair,
+                                   String emergencyContact, String emergencyContactNumber, String medicalConditions) {
+        ParticipantDetails participantDetails = new ParticipantDetails(shirtSize, estFinishTime, wheelChair, emergencyContact, emergencyContactNumber, medicalConditions);
+        eventDetails.put(eventReferralId, participantDetails);
+        return true;
     }
 
     public String getId() {
