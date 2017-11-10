@@ -1,26 +1,182 @@
-@()
+@(event: Event, participants: Seq[Person], form: Form[ParticipantEventData])
 
 @main("Events") {
-  <!-- TODO - insert event data here -->
 
+  <h1>Events</h1>
 
+  @* Flash shows updates to a page *@
+  @flash.asScala.map{ case (name, value) =>
+  <div class="@name">@value</div>
+  }
 
-  <!-- TODO - get ID for event to swap in endpoint. will need to rout to payment first later-->
-  <form class="form" action="/events/1/participants" method="post">
-    <div class="title-area">
-      <h1 class="h1 title">
-        Register for event (insert name here)</h1>
-    </div>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Event Type</th>
+        <th>Event Cost</th>
+        <th>Participant Cap</th>
+        <th>Street</th>
+        <th></th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip</th>
+        <th>Country</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>@event.getId</td>
+        <td><a href="/events/@event.getId">@event.getTitle</a></td>
+        <td>@event.getEventType</td>
+        <td>@event.getEventCost</td>
+        <td>@event.getParticipantCap</td>
+        <td>@event.getAddress.getStreet1</td>
+        <td>@event.getAddress.getStreet2</td>
+        <td>@event.getAddress.getCity</td>
+        <td>@event.getAddress.getState</td>
+        <td>@event.getAddress.getZip</td>
+        <td>@event.getAddress.getCountry</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Bib Number</th>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Mobile Number</th>
+        <th>Street</th>
+        <th></th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip</th>
+        <th>Country</th>
+        <th>Birthday</th>
+        <th>Emergency Contact</th>
+        <th>Emergency Contact #</th>
+        <th>Est Finish time</th>
+        <th>Shirt Size</th>
+      </tr>
+    </thead>
+    <tbody>
+    @for(participant <- participants) {
+      <tr>
+        <td>@participant.getId</td>
+        <td>@participant.getEventDetails.get(event.getId).getRunnerBibNumber</td>
+        <td>@participant.getEmail</td>
+        <td>@participant.getFirstName</td>
+        <td>@participant.getLastName</td>
+        <td>@participant.getMobileNumber</td>
+        <td>@participant.getAddress.getStreet1</td>
+        <td>@participant.getAddress.getStreet2</td>
+        <td>@participant.getAddress.getCity</td>
+        <td>@participant.getAddress.getState</td>
+        <td>@participant.getAddress.getZip</td>
+        <td>@participant.getAddress.getCountry</td>
+        <td>@participant.getDateOfBirth.getMonth / @participant.getDateOfBirth.getDay / @participant.getDateOfBirth.getYear</td>
+        <td>@participant.getEventDetails.get(event.getId).getEmergencyContact</td>
+        <td>@participant.getEventDetails.get(event.getId).getEmergencyContactNumber</td>
+        <td>@participant.getEventDetails.get(event.getId).getEstFinishTime</td>
+        <td>@participant.getEventDetails.get(event.getId).getShirtSize</td>
+      </tr>
+    }
+    </tbody>
+  </table>
+
+  <hr/>
+
+  @* Global errors are not tied to any particular form field *@
+  @if(form.hasGlobalErrors) {
+    @form.globalErrors.asScala.map { error: play.data.validation.ValidationError =>
+      <div>
+        @error.key: @error.message
+      </div>
+    }
+  }
+
+  @helper.form(routes.EventController.createEvent()) {
+    @helper.CSRF.formField
     <fieldset class="form-area">
-      <h2 class="personal-info">
-        Personal Info
-      </h2>
-      <h4 class="email-note">
-        If already registered just input EMAIL and leave other details blank
-      </h4>
       <p class="field-left"><label><strong>Email</strong> <input type="text" name="email" class="text required" maxlength="100" data-validation="required" value=""></label></p>
-      <p class="field-left"><label><strong>First Name</strong> <input type="text" name="first_name" class="text required" maxlength="100" data-validation="required" value=""></label></p>
-      <p class="field-left col-2"><label><strong>Last Name</strong> <input type="text" name="last_name" class="text required" maxlength="100" value=""></label></p>
+      <p class="field-left"><label><strong>First Name</strong> <input type="text" name="firstName" class="text required" maxlength="100" data-validation="required" value=""></label></p>
+      <p class="field-left col-2"><label><strong>Last Name</strong> <input type="text" name="lastName" class="text required" maxlength="100" value=""></label></p>
+      <p class="field-left col-2"><label><strong>Phone</strong><input type="text" name="mobileNumber" class="text phone" maxlength="20" value=""></label></p>
+      <p class="field-wide">
+        <label><strong>Street Address</strong> <input type="text" name="street1" class="text required street" maxlength="35" value="" ></label>
+        <label><input type="text" name="street2" class="text optional street" maxlength="35" value="" data-name="Street Address"></label></p>
+      <p class="field-left"><label><strong>City</strong> <input type="text" name="city" class="text required" maxlength="70" value=""></label></p>
+      <p class="field-left col-2"><label class="state"><strong>State</strong> <select name="state" class="select state-input required ">
+        <option value="">
+          Select One
+        </option>
+        <option value="AL">Alabama</option>
+        <option value="AK">Alaska</option>
+        <option value="AS">American Samoa</option>
+        <option value="AZ">Arizona</option>
+        <option value="AR">Arkansas</option>
+        <option value="AA">Armed Forces Americas</option>
+        <option value="AE">Armed Forces Europe</option>
+        <option value="AP">Armed Forces Pacific</option>
+        <option value="CA">California</option>
+        <option value="CO">Colorado</option>
+        <option value="CT">Connecticut</option>
+        <option value="DE">Delaware</option>
+        <option value="FL">Florida</option>
+        <option value="GA">Georgia</option>
+        <option value="GU">Guam</option>
+        <option value="HI">Hawaii</option>
+        <option value="ID">Idaho</option>
+        <option value="IL">Illinois</option>
+        <option value="IN">Indiana</option>
+        <option value="IA">Iowa</option>
+        <option value="KS">Kansas</option>
+        <option value="KY">Kentucky</option>
+        <option value="LA">Louisiana</option>
+        <option value="ME">Maine</option>
+        <option value="MD">Maryland</option>
+        <option value="MA">Massachusetts</option>
+        <option value="MI">Michigan</option>
+        <option value="MN">Minnesota</option>
+        <option value="MS">Mississippi</option>
+        <option value="MO">Missouri</option>
+        <option value="MT">Montana</option>
+        <option value="NE">Nebraska</option>
+        <option value="NV">Nevada</option>
+        <option value="NH">New Hampshire</option>
+        <option value="NJ">New Jersey</option>
+        <option value="NM">New Mexico</option>
+        <option value="NY">New York</option>
+        <option value="NC">North Carolina</option>
+        <option value="ND">North Dakota</option>
+        <option value="MP">Northern Mariana Islands</option>
+        <option value="OH">Ohio</option>
+        <option value="OK">Oklahoma</option>
+        <option value="OR">Oregon</option>
+        <option value="PA">Pennsylvania</option>
+        <option value="PR">Puerto Rico</option>
+        <option value="RI">Rhode Island</option>
+        <option value="SC">South Carolina</option>
+        <option value="SD">South Dakota</option>
+        <option value="TN">Tennessee</option>
+        <option value="TX">Texas</option>
+        <option value="VI">US Virgin Islands</option>
+        <option value="UT">Utah</option>
+        <option value="VT">Vermont</option>
+        <option value="VA">Virginia</option>
+        <option value="WA">Washington</option>
+        <option value="DC">Washington, DC</option>
+        <option value="WV">West Virginia</option>
+        <option value="WI">Wisconsin</option>
+        <option value="WY">Wyoming</option>
+      </select></label></p>
+      <p class="field-left"><label class="zipcode"><strong><span class="zipcode-title">Zip Code</span></strong>
+        <input type="text" name="zipcode" class="text zipcode-input required" maxlength="10" value=""></label></p>
       <p class="field-left"><label><strong>Country</strong> <select name="country" class="select country required">
         <option value="">
           Select One
@@ -128,86 +284,6 @@
         <option value="US" selected="">United States</option>
       </select></label></p>
 
-      <p class="field-wide">
-        <label><strong>Street Address</strong> <input type="text" name="line1" class="text required street" maxlength="35" value="" ></label>
-        <label><input type="text" name="line2" class="text optional street" maxlength="35" value="" data-name="Street Address"></label></p>
-
-      <p class="field-left"><label><strong>City</strong> <input type="text" name="city" class="text required" maxlength="70" value=""></label></p>
-
-      <p class="field-left col-2"><label class="state"><strong>State</strong> <select name="state" class="select state-input required ">
-        <option value="">
-          Select One
-        </option>
-        <option value="AL">Alabama</option>
-        <option value="AK">Alaska</option>
-        <option value="AS">American Samoa</option>
-        <option value="AZ">Arizona</option>
-        <option value="AR">Arkansas</option>
-        <option value="AA">Armed Forces Americas</option>
-        <option value="AE">Armed Forces Europe</option>
-        <option value="AP">Armed Forces Pacific</option>
-        <option value="CA">California</option>
-        <option value="CO">Colorado</option>
-        <option value="CT">Connecticut</option>
-        <option value="DE">Delaware</option>
-        <option value="FL">Florida</option>
-        <option value="GA">Georgia</option>
-        <option value="GU">Guam</option>
-        <option value="HI">Hawaii</option>
-        <option value="ID">Idaho</option>
-        <option value="IL">Illinois</option>
-        <option value="IN">Indiana</option>
-        <option value="IA">Iowa</option>
-        <option value="KS">Kansas</option>
-        <option value="KY">Kentucky</option>
-        <option value="LA">Louisiana</option>
-        <option value="ME">Maine</option>
-        <option value="MD">Maryland</option>
-        <option value="MA">Massachusetts</option>
-        <option value="MI">Michigan</option>
-        <option value="MN">Minnesota</option>
-        <option value="MS">Mississippi</option>
-        <option value="MO">Missouri</option>
-        <option value="MT">Montana</option>
-        <option value="NE">Nebraska</option>
-        <option value="NV">Nevada</option>
-        <option value="NH">New Hampshire</option>
-        <option value="NJ">New Jersey</option>
-        <option value="NM">New Mexico</option>
-        <option value="NY">New York</option>
-        <option value="NC">North Carolina</option>
-        <option value="ND">North Dakota</option>
-        <option value="MP">Northern Mariana Islands</option>
-        <option value="OH">Ohio</option>
-        <option value="OK">Oklahoma</option>
-        <option value="OR">Oregon</option>
-        <option value="PA">Pennsylvania</option>
-        <option value="PR">Puerto Rico</option>
-        <option value="RI">Rhode Island</option>
-        <option value="SC">South Carolina</option>
-        <option value="SD">South Dakota</option>
-        <option value="TN">Tennessee</option>
-        <option value="TX">Texas</option>
-        <option value="VI">US Virgin Islands</option>
-        <option value="UT">Utah</option>
-        <option value="VT">Vermont</option>
-        <option value="VA">Virginia</option>
-        <option value="WA">Washington</option>
-        <option value="DC">Washington, DC</option>
-        <option value="WV">West Virginia</option>
-        <option value="WI">Wisconsin</option>
-        <option value="WY">Wyoming</option>
-      </select>
-        <input name="state" class="text state-input optional hidden" maxlength="25" disabled="disabled" value=""></label></p>
-      <p class="field-left"><label class="zipcode"><strong><span class="zipcode-title">Zip Code</span></strong>
-        <input type="text" name="postal_code" class="text zipcode-input required" maxlength="10" value=""></label></p>
-      <div class="field-left col-2">
-        <label><strong class="float-left">Phone</strong>
-          <input type="text" name="phone_number" class="text phone" maxlength="20" value="">
-        </label>
-      </div>
-
-
       <div class="field-left">
         <label class="gender"><strong><span class="gender-title">Gender</span></strong></label>
         <ul>
@@ -235,7 +311,7 @@
         <option value="10">October</option>
         <option value="11">November</option>
         <option value="12">December</option>
-      </select><input name="month" class="text month-input optional hidden" maxlength="25" disabled="disabled" value=""></label></p>
+      </select></label></p>
       <p class="field-left col-2"><label class="day"><strong>Day</strong> <select name="day" class="select day-input required ">
         <option value="">
           Select One
@@ -271,9 +347,9 @@
         <option value="29">29</option>
         <option value="30">30</option>
         <option value="31">31</option>
-      </select><input name="day" class="text day-input optional hidden" maxlength="25" disabled="disabled" value=""></label></p>
+      </select></label></p>
         <!-- TODO - input missing years -->
-      <p class="field-left col-2"><label class="year"><strong>Year</strong> <select name="day" class="select day-input required ">
+      <p class="field-left col-2"><label class="year"><strong>Year</strong> <select name="year" class="select year-input required ">
         <option value="">
           Select One
         </option>
@@ -282,52 +358,12 @@
         <option value="1990">1990</option>
         <option value="2000">2000</option>
         <option value="2010">2010</option>
-      </select><input name="year" class="text year-input optional hidden" maxlength="25" disabled="disabled" value=""></label></p>
+      </select></label></p>
 
+      <!-- TODO insert options for race -->
 
-        <!-- EVENT STUFF-->
-      <h2 class="personal-info">
-        Event details
-      </h2>
-      <p class="field-left col-2"><label class="shirt-size"><strong>Shirt Size</strong> <select name="shirt-size" class="select shirt-size-input required ">
-        <option value="">Select One</option>
-        <option value="XS">Extra Small</option>
-        <option value="S">Small</option>
-        <option value="M">Medium</option>
-        <option value="L">Large</option>
-        <option value="XL">Extra Large</option>
-        <option value="XXL">XXL</option>
-      </select><input name="shirt-size" class="text shirt-size-input optional hidden" maxlength="25" disabled="disabled" value=""></label></p>
-      <p class="field-left"><label><strong>Estimated Finish Time</strong> <input type="text" name="time" class="text required" maxlength="100" data-validation="required" value=""></label></p>
-
-      <div class="field-left">
-        <label class="wheelchair"><strong><span class="wheelchair-title">Gender</span></strong></label>
-        <ul>
-          <li> <input id="no" type="radio" name="wheelchair" value="no" checked><label>No</label> </li>
-          <li> <input id="yes" type="radio" name="wheelchair" value="yes"><label>Yes</label></li>
-        </ul>
-      </div>
-
-      <div class="field-left col-1">
-        <label><strong class="float-left">Emergency Contact</strong>
-          <input type="text" name="emergency_contact" class="text emergency_contact" maxlength="20" value="">
-        </label>
-      </div>
-      <div class="field-left col-2">
-        <label><strong class="float-left">Emergency Contact Phone Number</strong>
-          <input type="text" name="emergency_contact_phone_number" class="text emergency_contact_phone_number" maxlength="20" value="">
-        </label>
-      </div>
-
-      <div class="field-left col-1">
-        <label><strong class="float-left">Medical Conditions?</strong>
-          <textarea rows="5" name="medical_conditions" placeholder="Please list any medical conditions" id="medical_conditions"></textarea>
-        </label>
-      </div>
-
-
-      <button type="submit" class="button-large submit">Register!</button>
-
+      <button type="submit">Register</button>
     </fieldset>
-  </form>
+  }
+
 }

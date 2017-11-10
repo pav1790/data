@@ -13,18 +13,20 @@ public class Event {
     private Address address;
     private String organizerId;
     private int participantCap;
-    private Map<String, Double> eventOptions;
+    private String eventType;
+    private double eventCost;
     private final String editKey = "secretKey";
     private List<String> participantIds;
 
-    public Event(String title, Address address, String organizerId, int participantCap, Map<String, Double> eventOptions) {
+    public Event(String title, Address address, String organizerId, int participantCap, String eventType, double eventCost) {
         this.id = IDMaker.INSTANCE.getNewID();
         this.title = title;
         this.address = address;
         this.organizerId = organizerId;
         this.participantCap = participantCap;
-        this.eventOptions = eventOptions;
-        participantIds = new ArrayList<>();
+        this.eventType = eventType;
+        this.eventCost = eventCost;
+        this.participantIds = new ArrayList<>();
     }
 
     public String getId() {
@@ -47,8 +49,12 @@ public class Event {
         return participantCap;
     }
 
-    public Map<String, Double> getEventOptions() {
-        return eventOptions;
+    public String getEventType() {
+        return eventType;
+    }
+
+    public double getEventCost() {
+        return eventCost;
     }
 
     public boolean registerParticipant(Person participant) {

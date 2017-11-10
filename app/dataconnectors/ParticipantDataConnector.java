@@ -26,6 +26,19 @@ public enum ParticipantDataConnector {
         return catalog;
     }
 
+    public List<Person> getParticipants(List<String> participantIds) {
+        List<Person> participants = new ArrayList<>();
+        for (String participantId : participantIds) {
+            participants.add(getParticipant(participantId));
+        }
+        return participants;
+    }
+
+    /**
+     * Used only for verifications. TODO - try to delete
+     * @param participant
+     * @return
+     */
     public Person getParticipant(Person participant) {
         return catalog.get(participant.getId());
     }

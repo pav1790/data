@@ -6,15 +6,15 @@
 GET     /                               controllers.HomeController.index
 
 # Events
-GET     /events                         controllers.EventController.index
+GET     /events                         controllers.EventController.viewAllEvents
 POST    /events/create                  controllers.EventController.createEvent
 
-GET     /events/:id                     controllers.EventController.getEventData(id)
-POST    /events/:id                     controllers.EventController.editEventData(id)
+GET     /events/:id                     controllers.EventController.viewEvent(id)
+POST    /events/:id/edit                controllers.EventController.editEventData(id)
 
-GET     /events/:id/participants        controllers.EventController.getParticipantList(id)
-POST    /events/:id/participants        controllers.EventController.addParticipant(id)
-GET     /events/:id/participants/:id    controllers.EventController.getParticipant(id)
+GET     /events/:id/participants        controllers.EventController.viewAllRegisteredParticipants(id)
+POST    /events/:id/participants/add    controllers.EventController.addParticipant(id)
+GET     /events/:id/participants/:id    controllers.EventController.viewRegisteredParticipant(id)
 
 GET     /participants                   controllers.ParticipantController.viewAllParticipants
 GET     /participants/create            controllers.ParticipantController.createParticipant

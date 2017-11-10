@@ -1,18 +1,18 @@
 package controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import dataconnectors.EventDataConnector;
 import dataconnectors.OrganizerDataConnector;
 import dataconnectors.ParticipantDataConnector;
 import models.*;
-import play.libs.Json;
+import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.*;
-import play.mvc.Http.Request;
-import scala.Int;
 
-import java.util.HashMap;
+import javax.inject.Inject;
+
 import java.util.List;
-import java.util.Map;
+
+import static play.libs.Scala.asScala;
 
 
 /**
@@ -21,113 +21,66 @@ import java.util.Map;
  */
 public class EventController extends Controller {
 
+    private final Form<EventData> eventDataForm;
+    private final Form<ParticipantEventData> participantEventDataForm;
+
     private static EventDataConnector eventDataConnector = EventDataConnector.INSTANCE;
     private static OrganizerDataConnector organizerDataConnector = OrganizerDataConnector.INSTANCE;
     private static ParticipantDataConnector participantDataConnector = ParticipantDataConnector.INSTANCE;
 
-    /**
-     * An action that renders an HTML page with a welcome message.
-     * The configuration in the <code>routes</code> file means that
-     * this method will be called when the application receives a
-     * <code>GET</code> request with a path of <code>/</code>.
-     */
-    public Result index() {
-        return ok(views.html.eventindex.render());
+
+    @Inject
+    public EventController(FormFactory formFactory) {
+        this.eventDataForm = formFactory.form(EventData.class);
+        this.participantEventDataForm = formFactory.form(ParticipantEventData.class);
+        Address sampleAddress = new Address("Street 1", "Street2", "City", "OH", 43065, "US");
+        String organizerId = organizerDataConnector.getAllOrganizers().keySet().iterator().next();
+        Event event = new Event("Sample Event", sampleAddress, organizerId, 10, "5k", 20.0);
+        eventDataConnector.creatEvent(event);
+    }
+
+    public Result viewAllEvents() {
+        return ok(views.html.listEvents.render(asScala(eventDataConnector.getAllEvents().values()), eventDataForm));
     }
 
     public Result createEvent() {
-        String title = request().getQueryString("title");
+        final Form<EventData> boundForm = eventDataForm.bindFromRequest();
 
-        Address address = createAddress(request());
-
-        Organizer organizer = organizerDataConnector.getOrganizer(request().getQueryString("organizer"));
-
-        int participantCap = Integer.parseInt(request().getQueryString("participant_cap"));
-
-        Map<String, Double> eventOptions = new HashMap<String, Double>();
-        /** TODO - create options for each one found
-        *      example: {[5k, $40], [10k, $60]}
-        * */
-
-        Event event = new Event(title, address, organizer.getId(), participantCap, eventOptions);
-        eventDataConnector.creatEvent(event);
-        return ok();
+        if (boundForm.hasErrors()) {
+            play.Logger.ALogger logger = play.Logger.of(getClass());
+            logger.error("errors = {}", boundForm.errors());
+            return badRequest(views.html.listEvents.render(asScala(eventDataConnector.getAllEvents().values()), boundForm));
+        } else {
+            EventData data = boundForm.get();
+            Address address = new Address(data.getStreet1(), data.getStreet2(), data.getCity(), data.getState(), data.getZip(), data.getCountry());
+            Event event = new Event(data.getTitle(), address, data.getOrganizerId(), data.getParticipantCap(), data.getEventType(), data.getEventCost());
+            eventDataConnector.creatEvent(event);
+            flash("info", "Event created!");
+            return redirect(routes.EventController.viewAllEvents());
+        }
     }
 
-    public Result getEventData(String id) {
-        // TODO - return info on 1 event
+    public Result viewEvent(String id) {
         Event event = eventDataConnector.getEvent(id);
-        return ok(views.html.index.render());
+        List<String> participantIds = event.getParticipantIdList();
+        List<Person> participants = participantDataConnector.getParticipants(participantIds);
+        return ok(views.html.listEventDetails.render(event, asScala(participants), participantEventDataForm));
     }
 
     public Result editEventData(String id) {
-        // TODO - edit the event with the given ID
-        return ok();
+        return ok(views.html.index.render());
     }
 
-    /**
-     * Returns all participants in event
-     * @param id Event ID
-     * @return
-     */
-    public Result getParticipantList(String id) {
-        // TODO - return the participant list for the given event
-        List<String> participantIdList = eventDataConnector.getEvent(id).getParticipantIdList();
-        List<Person> participantList = participantDataConnector.getParticipantList(participantIdList);
-        return ok();
+    public Result viewAllRegisteredParticipants(String id) {
+        return ok(views.html.index.render());
     }
 
     public Result addParticipant(String id) {
-        // Person info
-        String eventReferral = request().getQueryString("eventReferral");
-        String email = request().getQueryString("email");
-        Person participant = participantDataConnector.getParticipantViaEmail(email);
-        if (participant == null) {
-
-            String firstName = request().getQueryString("firstname");
-            String lastName = request().getQueryString("lastname");
-            DateOfBirth dateOfBirth = new DateOfBirth(Integer.getInteger(request().getQueryString("day")),
-                    Integer.getInteger(request().getQueryString("month")),
-                    Integer.getInteger(request().getQueryString("year")));
-            Address address = createAddress(request());
-            String mobileNumber = request().getQueryString("mobileNumber");
-            String gender = request().getQueryString("gender");
-            String shirtSize = request().getQueryString("shirtSize");
-            String estFinishTime = request().getQueryString("estFinishTime");
-            String wheelChair = request().getQueryString("wheelChair");
-            String emergencyContact = request().getQueryString("emergencyContact");
-            String emergencyContactNumber = request().getQueryString("emergencyContactNumber");
-            String medicalConditions = request().getQueryString("medicalConditions");
-
-
-            participant = new Person(firstName, lastName, dateOfBirth, email,
-                    mobileNumber, gender, address, shirtSize, estFinishTime, Boolean.getBoolean(wheelChair),
-                    emergencyContact, emergencyContactNumber, medicalConditions, eventReferral);
-        } else {
-            // TODO - update info if does not exist or changed
-        }
-        eventDataConnector.registerParticipant(eventReferral, participant);
-        return ok();
+        return ok(views.html.index.render());
     }
 
-    public Result getParticipant(String id) {
-        return ok();
-    }
-
-    private Address createAddress(Request request) {
-        String street1 = request.getQueryString("street1");
-        String street2 = request.getQueryString("street2");
-        String city = request.getQueryString("city");
-        String state = request.getQueryString("state");
-        int zip = Integer.parseInt(request.getQueryString("zip"));
-        String country = request.getQueryString("country");
-        return new Address(street1, street2, city, state, zip, country);
-    }
-
-    public Result viewAllParticipants() {
-        // TODO
-        participantDataConnector.getAllParticipants();
-        return ok(views.html.participantindex.render());
+    public Result viewRegisteredParticipant(String id) {
+        return ok(views.html.index.render());
     }
 
 }

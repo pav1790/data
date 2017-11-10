@@ -21,10 +21,7 @@ public enum EventDataConnector {
         if (catalog.isEmpty()) {
             Organizer sampleOrganizer = OrganizerDataConnector.INSTANCE.getAllOrganizers().entrySet().iterator().next().getValue();
             Address sampleAddress = new Address("Street 1", "Street2", "City", "OH", 43065, "US");
-            Map<String, Double> sampleOptions = new HashMap<String, Double>();
-            sampleOptions.put("5k", 10.0);
-
-            Event sampleEvent = new Event("Sample Event", sampleAddress, sampleOrganizer.getId(), 10, sampleOptions);
+            Event sampleEvent = new Event("Sample Event", sampleAddress, sampleOrganizer.getId(), 10, "5k", 10.0);
             creatEvent(sampleEvent);
         }
 

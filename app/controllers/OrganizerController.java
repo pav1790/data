@@ -20,9 +20,11 @@ public class OrganizerController extends Controller {
     @Inject
     public OrganizerController(FormFactory formFactory) {
         this.form = formFactory.form(OrganizerData.class);
-        Address sampleAddress = new Address("Street 1", "Street2", "City", "OH", 43065, "US");
-        Organizer organizer = new Organizer("Sample", "Organizer", "sampleorganizer@email.com", "5555555555", sampleAddress);
-        organizerDataConnector.registerOrganizer(organizer);
+        if (organizerDataConnector.getAllOrganizers().isEmpty()) {
+            Address sampleAddress = new Address("Street 1", "Street2", "City", "OH", 43065, "US");
+            Organizer organizer = new Organizer("Sample", "Organizer", "sampleorganizer@email.com", "5555555555", sampleAddress);
+            organizerDataConnector.registerOrganizer(organizer);
+        }
     }
 
     public Result viewAllOrganizers() {
