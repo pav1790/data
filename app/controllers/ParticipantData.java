@@ -4,7 +4,7 @@ import play.data.validation.Constraints;
 
 import java.time.Month;
 
-public class PartcipantData {
+public class ParticipantData {
 
     @Constraints.Required
     private String email;
@@ -19,7 +19,7 @@ public class PartcipantData {
     private int day;
 
     @Constraints.Required
-    private Month month;
+    private int month;
 
     @Constraints.Required
     private int year;
@@ -27,7 +27,6 @@ public class PartcipantData {
     @Constraints.Required
     private String street1;
 
-    @Constraints.Required
     private String street2;
 
     @Constraints.Required
@@ -43,12 +42,12 @@ public class PartcipantData {
     private String country;
 
     @Constraints.Required
-    private int mobileNumber;
+    private String mobileNumber;
 
     @Constraints.Required
     private String gender;
 
-    public PartcipantData () {}
+    public ParticipantData() {}
 
     public String getEmail() {
         return email;
@@ -82,11 +81,11 @@ public class PartcipantData {
         this.day = day;
     }
 
-    public Month getMonth() {
+    public int getMonth() {
         return month;
     }
 
-    public void setMonth(Month month) {
+    public void setMonth(int month) {
         this.month = month;
     }
 
@@ -146,11 +145,11 @@ public class PartcipantData {
         this.country = country;
     }
 
-    public int getMobileNumber() {
+    public String getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 

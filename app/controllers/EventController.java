@@ -8,6 +8,8 @@ import models.*;
 import play.libs.Json;
 import play.mvc.*;
 import play.mvc.Http.Request;
+import scala.Int;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +86,9 @@ public class EventController extends Controller {
 
             String firstName = request().getQueryString("firstname");
             String lastName = request().getQueryString("lastname");
-            DateOfBirth dateOfBirth = new DateOfBirth(request().getQueryString("day"), request().getQueryString("month"), request().getQueryString("year"));
+            DateOfBirth dateOfBirth = new DateOfBirth(Integer.getInteger(request().getQueryString("day")),
+                    Integer.getInteger(request().getQueryString("month")),
+                    Integer.getInteger(request().getQueryString("year")));
             Address address = createAddress(request());
             String mobileNumber = request().getQueryString("mobileNumber");
             String gender = request().getQueryString("gender");

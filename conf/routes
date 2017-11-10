@@ -16,7 +16,8 @@ GET     /events/:id/participants        controllers.EventController.getParticipa
 POST    /events/:id/participants        controllers.EventController.addParticipant(id)
 GET     /events/:id/participants/:id    controllers.EventController.getParticipant(id)
 
-GET     /participants                   controllers.EventController.viewAllParticipants
+GET     /participants                   controllers.ParticipantController.viewAllParticipants
+GET     /participants/create            controllers.ParticipantController.createParticipant
 
 GET     /organizers                     controllers.OrganizerController.viewAllOrganizers
 POST    /organizers/create              controllers.OrganizerController.createOrganizer
