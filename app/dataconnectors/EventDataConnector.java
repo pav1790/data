@@ -37,6 +37,7 @@ public enum EventDataConnector {
     }
 
     public boolean registerParticipant(String eventReferralId, Person participant) {
+        participantDataConnector.registerParticipant(participant);
         return catalog.get(eventReferralId).registerParticipant(participant);
     }
 }

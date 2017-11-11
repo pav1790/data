@@ -100,9 +100,11 @@
     }
   }
 
-  @helper.form(routes.EventController.createEvent()) {
+  @helper.form(routes.EventController.addParticipant(event.getId)) {
     @helper.CSRF.formField
     <fieldset class="form-area">
+      <p class="field-left"><label><strong>Event ID</strong> <input style="display: none;" type="text" name="eventReferralId" value="@event.getId" data-validation="required"></label></p>
+      <p class="field-left"><label><strong>Event Name</strong> <input type="text" name="eventName" disabled="disabled" value="@event.getTitle"></label></p>
       <p class="field-left"><label><strong>Email</strong> <input type="text" name="email" class="text required" maxlength="100" data-validation="required" value=""></label></p>
       <p class="field-left"><label><strong>First Name</strong> <input type="text" name="firstName" class="text required" maxlength="100" data-validation="required" value=""></label></p>
       <p class="field-left col-2"><label><strong>Last Name</strong> <input type="text" name="lastName" class="text required" maxlength="100" value=""></label></p>
@@ -360,7 +362,41 @@
         <option value="2010">2010</option>
       </select></label></p>
 
-      <!-- TODO insert options for race -->
+      <p class="field-left col-2"><label class="shirt-size"><strong>Shirt Size</strong> <select name="shirtSize" class="select shirt-size-input required ">
+        <option value="">Select One</option>
+        <option value="XS">Extra Small</option>
+        <option value="S">Small</option>
+        <option value="M">Medium</option>
+        <option value="L">Large</option>
+        <option value="XL">Extra Large</option>
+        <option value="XXL">XXL</option>
+      </select></label></p>
+      <p class="field-left"><label><strong>Estimated Finish Time</strong> <input type="text" name="estFinishTime" class="text required" maxlength="100" data-validation="required" value=""></label></p>
+
+      <div class="field-left">
+        <label class="wheelchair"><strong><span class="wheelchair-title">Wheel Chair</span></strong></label>
+        <ul>
+          <li> <input id="no" type="radio" name="wheelchair" value="no" checked><label>No</label> </li>
+          <li> <input id="yes" type="radio" name="wheelchair" value="yes"><label>Yes</label></li>
+        </ul>
+      </div>
+
+      <div class="field-left col-1">
+        <label><strong class="float-left">Emergency Contact</strong>
+          <input type="text" name="emergencyContact" class="text emergency_contact" maxlength="20" value="">
+        </label>
+      </div>
+      <div class="field-left col-2">
+        <label><strong class="float-left">Emergency Contact Phone Number</strong>
+          <input type="text" name="emergencyContactNumber" class="text emergency_contact_phone_number" maxlength="20" value="">
+        </label>
+      </div>
+
+      <div class="field-left col-1">
+        <label><strong class="float-left">Medical Conditions?</strong>
+          <textarea rows="5" name="medicalConditions" placeholder="Please list any medical conditions" id="medical_conditions"></textarea>
+        </label>
+      </div>
 
       <button type="submit">Register</button>
     </fieldset>

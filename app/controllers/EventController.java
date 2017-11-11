@@ -33,10 +33,18 @@ public class EventController extends Controller {
     public EventController(FormFactory formFactory) {
         this.eventDataForm = formFactory.form(EventData.class);
         this.participantEventDataForm = formFactory.form(ParticipantEventData.class);
+
+        // Create sample event
         Address sampleAddress = new Address("Street 1", "Street2", "City", "OH", 43065, "US");
         String organizerId = organizerDataConnector.getAllOrganizers().keySet().iterator().next();
         Event event = new Event("Sample Event", sampleAddress, organizerId, 10, "5k", 20.0);
         eventDataConnector.creatEvent(event);
+
+        // Populate sample event with someone
+        Person person = new Person("Joe", "Cooler", new DateOfBirth(1,1,1980), "joecooler@email.com",
+                "5551236541", "Male", sampleAddress, "Small", "2:30:45", false,
+                "E C", "5553216541",  "none", event.getId());
+        eventDataConnector.registerParticipant(event.getId(),person);
     }
 
     public Result viewAllEvents() {
@@ -68,19 +76,30 @@ public class EventController extends Controller {
     }
 
     public Result editEventData(String id) {
-        return ok(views.html.index.render());
-    }
-
-    public Result viewAllRegisteredParticipants(String id) {
-        return ok(views.html.index.render());
+        return redirect(routes.EventController.viewEvent(id));
     }
 
     public Result addParticipant(String id) {
-        return ok(views.html.index.render());
-    }
+        final Form<ParticipantEventData> boundForm = participantEventDataForm.bindFromRequest();
 
-    public Result viewRegisteredParticipant(String id) {
-        return ok(views.html.index.render());
+        if (boundForm.hasErrors()) {
+            play.Logger.ALogger logger = play.Logger.of(getClass());
+            logger.error("errors = {}", boundForm.errors());
+            Event event = eventDataConnector.getEvent(id);
+            List<String> participantIds = event.getParticipantIdList();
+            List<Person> participants = participantDataConnector.getParticipants(participantIds);
+            return badRequest(views.html.listEventDetails.render(event, asScala(participants), boundForm));
+        } else {
+            ParticipantEventData data = boundForm.get();
+            DateOfBirth dateOfBirth = new DateOfBirth(data.getDay(), data.getMonth(), data.getYear());
+            Address address = new Address(data.getStreet1(), data.getStreet2(), data.getCity(), data.getState(), data.getZip(), data.getCountry());
+            Person person = new Person(data.getFirstName(), data.getLastName(), dateOfBirth, data.getEmail(), data.getMobileNumber(), data.getGender(),
+                    address, data.getShirtSize(), data.getEstFinishTime(), data.isWheelChair(), data.getEmergencyContact(), data.getEmergencyContactNumber(),
+                    data.getMedicalConditions(), data.getEventReferralId());
+            eventDataConnector.registerParticipant(data.getEventReferralId(), person);
+            flash("info", "Event created!");
+            return redirect(routes.EventController.viewEvent(id));
+        }
     }
 
 }
