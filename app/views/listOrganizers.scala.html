@@ -1,4 +1,4 @@
-@(organizers: Seq[Organizer], form: Form[OrganizerData])
+@(organizers: Seq[Organizer], form: play.data.Form[OrganizerData])
 
 @main("Organizers") {
 
@@ -63,8 +63,11 @@
             <p class="field-left col-2"><label><strong>Last Name</strong> <input type="text" name="lastName" class="text required" maxlength="100" value=""></label></p>
             <p class="field-left col-2"><label><strong>Phone</strong><input type="text" name="mobileNumber" class="text phone" maxlength="20" value=""></label></p>
             <p class="field-wide">
-                <label><strong>Street Address</strong> <input type="text" name="street1" class="text required street" maxlength="35" value="" ></label>
-                <label><input type="text" name="street2" class="text optional street" maxlength="35" value="" data-name="Street Address"></label></p>
+                <label><strong>Street Address</strong>
+                    <input type="text" name="street1" class="text required street" maxlength="35" value="" >
+                    <input type="text" name="street2" class="text optional street" maxlength="35" value="" data-name="Street Address">
+                </label>
+            </p>
             <p class="field-left"><label><strong>City</strong> <input type="text" name="city" class="text required" maxlength="70" value=""></label></p>
             <p class="field-left col-2"><label class="state"><strong>State</strong> <select name="state" class="select state-input required ">
                 <option value="">

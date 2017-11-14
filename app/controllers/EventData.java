@@ -3,6 +3,7 @@ package controllers;
 import models.Address;
 import play.data.validation.Constraints;
 
+import java.util.Date;
 import java.util.Map;
 
 public class EventData {
@@ -38,6 +39,9 @@ public class EventData {
 
     @Constraints.Required
     private double eventCost;
+
+    @Constraints.Required
+    private Date date;
 
     public EventData() {
 
@@ -129,5 +133,13 @@ public class EventData {
 
     public void setEventCost(double eventCost) {
         this.eventCost = eventCost;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

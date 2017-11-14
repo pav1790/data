@@ -2,6 +2,7 @@ package models;
 
 import helpers.IDMaker;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public class Person {
     private final String id;
     private String firstName;
     private String lastName;
-    private DateOfBirth dateOfBirth;
+    private Date dateOfBirth;
     private Address address;
     private String email;
     private String mobileNumber;
@@ -30,7 +31,7 @@ public class Person {
      * @param gender
      * @param address
      */
-    public Person(String firstName, String lastName, DateOfBirth dateOfBirth, String email, String mobileNumber, String gender, Address address) {
+    public Person(String firstName, String lastName, Date dateOfBirth, String email, String mobileNumber, String gender, Address address) {
         this.id = IDMaker.INSTANCE.getNewID();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,7 +44,7 @@ public class Person {
         eventDetails = new HashMap<>();
     }
 
-    public Person(String firstName, String lastName, DateOfBirth dateOfBirth, String email, String mobileNumber, String gender, Address address,
+    public Person(String firstName, String lastName, Date dateOfBirth, String email, String mobileNumber, String gender, Address address,
                   String shirtSize, String estFinishTime, boolean wheelChair, String emergencyContact, String emergencyContactNumber, String medicalConditions, String eventReferralId) {
         this(firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
         addEventDetails(eventReferralId, shirtSize, estFinishTime, wheelChair, emergencyContact, emergencyContactNumber, medicalConditions);
@@ -69,7 +70,7 @@ public class Person {
         return lastName;
     }
 
-    public DateOfBirth getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 

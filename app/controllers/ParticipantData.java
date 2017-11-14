@@ -3,6 +3,7 @@ package controllers;
 import play.data.validation.Constraints;
 
 import java.time.Month;
+import java.util.Date;
 
 public class ParticipantData {
 
@@ -16,13 +17,7 @@ public class ParticipantData {
     private String lastName;
 
     @Constraints.Required
-    private int day;
-
-    @Constraints.Required
-    private int month;
-
-    @Constraints.Required
-    private int year;
+    private Date dateOfBirth;
 
     @Constraints.Required
     private String street1;
@@ -73,28 +68,12 @@ public class ParticipantData {
         this.lastName = lastName;
     }
 
-    public int getDay() {
-        return day;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getStreet1() {

@@ -3,6 +3,7 @@ package models;
 import helpers.IDMaker;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ public class Event {
 
     private String id;
     private String title;
+    private Date date;
     private Address address;
     private String organizerId;
     private int participantCap;
@@ -18,9 +20,10 @@ public class Event {
     private final String editKey = "secretKey";
     private List<String> participantIds;
 
-    public Event(String title, Address address, String organizerId, int participantCap, String eventType, double eventCost) {
+    public Event(String title, Date date, Address address, String organizerId, int participantCap, String eventType, double eventCost) {
         this.id = IDMaker.INSTANCE.getNewID();
         this.title = title;
+        this.date = date;
         this.address = address;
         this.organizerId = organizerId;
         this.participantCap = participantCap;
@@ -35,6 +38,10 @@ public class Event {
 
     public String getTitle() {
         return title;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public Address getAddress() {

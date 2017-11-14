@@ -1,4 +1,4 @@
-@(events: Seq[Event], form: Form[EventData])
+@(events: Seq[Event], organizers: Map[String, Organizer], form: play.data.Form[EventData])
 
 @main("Events") {
 
@@ -14,6 +14,8 @@
             <tr>
                 <th>ID</th>
                 <th>Title</th>
+                <th>Date</th>
+                <th>Organizer</th>
                 <th>Event Type</th>
                 <th>Event Cost</th>
                 <th>Participant Cap</th>
@@ -30,6 +32,8 @@
             <tr>
                 <td>@event.getId</td>
                 <td><a href="/events/@event.getId">@event.getTitle</a></td>
+                <td>@event.getDate</td>
+                <th>@organizers.get(event.getOrganizerId).getFirstName @organizers.get(event.getOrganizerId).getLastName</th>
                 <td>@event.getEventType</td>
                 <td>@event.getEventCost</td>
                 <td>@event.getParticipantCap</td>
@@ -58,13 +62,26 @@
     @helper.form(routes.EventController.createEvent()) {
         @helper.CSRF.formField
         <fieldset class="form-area">
+            <p class="field-left col-2"><label class="organizer"><strong>Organizer</strong>
+                <select name="organizer" class="select state-input required ">
+                    <option value="">
+                        Select One
+                    </option>
+                    @for((key,value) <- organizers) {
+                        <option value="@key">@value.getFirstName @value.getLastName</option>
+                    }
+                </select></label>
+            </p>
             <p class="field-left"><label><strong>Title</strong> <input type="text" name="title" class="text required" maxlength="100" data-validation="required" value=""></label></p>
+            <p class="field-left"><label><strong>Date</strong> <input type="date" name="date" class="text required" ></label></p>
             <p class="field-left"><label><strong>Event Type</strong> <input type="text" name="eventType" class="text required" maxlength="100" data-validation="required" value=""></label></p>
-            <p class="field-left col-2"><label><strong>Event Cost</strong> <input type="text" name="eventCost" class="text required" maxlength="100" value=""></label></p>
-            <p class="field-left col-2"><label><strong>Participant Cap</strong><input type="text" name="participantCap" class="text required" maxlength="20" value=""></label></p>
+            <p class="field-left"><label><strong>Event Cost</strong> <input type="text" name="eventCost" class="text required" maxlength="100" value=""></label></p>
+            <p class="field-left"><label><strong>Participant Cap</strong> <input type="text" name="participantCap" class="text required" maxlength="20" value=""></label></p>
             <p class="field-wide">
-                <label><strong>Street Address</strong> <input type="text" name="street1" class="text required street" maxlength="35" value="" ></label>
-                <label><input type="text" name="street2" class="text optional street" maxlength="35" value="" data-name="Street Address"></label></p>
+                <label><strong>Street Address</strong>
+                    <input type="text" name="street1" class="text required street" maxlength="35" value="" >
+                    <input type="text" name="street2" class="text optional street" maxlength="35" value="" data-name="Street Address">
+                </label></p>
             <p class="field-left"><label><strong>City</strong> <input type="text" name="city" class="text required" maxlength="70" value=""></label></p>
             <p class="field-left col-2"><label class="state"><strong>State</strong> <select name="state" class="select state-input required ">
                 <option value="">
