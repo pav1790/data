@@ -45,14 +45,14 @@ public class Person {
     }
 
     public Person(String firstName, String lastName, Date dateOfBirth, String email, String mobileNumber, String gender, Address address,
-                  String shirtSize, String estFinishTime, boolean wheelChair, String emergencyContact, String emergencyContactNumber, String medicalConditions, String eventReferralId) {
+                  String shirtSize, String subEventId, String estFinishTime, boolean wheelChair, String emergencyContact, String emergencyContactNumber, String medicalConditions, String eventReferralId) {
         this(firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
-        addEventDetails(eventReferralId, shirtSize, estFinishTime, wheelChair, emergencyContact, emergencyContactNumber, medicalConditions);
+        addEventDetails(eventReferralId, shirtSize, subEventId, estFinishTime, wheelChair, emergencyContact, emergencyContactNumber, medicalConditions);
     }
 
-    public boolean addEventDetails(String eventReferralId, String shirtSize, String estFinishTime, boolean wheelChair,
+    public boolean addEventDetails(String eventReferralId, String shirtSize, String subEventId, String estFinishTime, boolean wheelChair,
                                    String emergencyContact, String emergencyContactNumber, String medicalConditions) {
-        ParticipantDetails participantDetails = new ParticipantDetails(eventReferralId, shirtSize, estFinishTime,
+        ParticipantDetails participantDetails = new ParticipantDetails(eventReferralId, shirtSize, subEventId, estFinishTime,
                 wheelChair, emergencyContact, emergencyContactNumber, medicalConditions);
         eventDetails.put(eventReferralId, participantDetails);
         return true;

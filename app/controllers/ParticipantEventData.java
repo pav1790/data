@@ -5,6 +5,9 @@ import play.data.validation.Constraints;
 public class ParticipantEventData extends ParticipantData {
 
     @Constraints.Required
+    private String eventOption;
+
+    @Constraints.Required
     private String shirtSize;
 
     @Constraints.Required
@@ -26,6 +29,13 @@ public class ParticipantEventData extends ParticipantData {
 
     private String runnerBibNumber;
 
+    public String getEventOption() {
+        return eventOption;
+    }
+
+    public void setEventOption(String eventOption) {
+        this.eventOption = eventOption;
+    }
 
     public String getShirtSize() {
         return shirtSize;

@@ -23,7 +23,7 @@ public enum EventDataConnector {
         if (catalog.isEmpty()) {
             Organizer sampleOrganizer = OrganizerDataConnector.INSTANCE.getAllOrganizers().entrySet().iterator().next().getValue();
             Address sampleAddress = new Address("Street 1", "Street2", "City", "OH", 43065, "US");
-            Event sampleEvent = new Event("Sample Event", new Date(Year.now().getValue(), 12, 31), sampleAddress, sampleOrganizer.getId(), 10, "5k", 10.0);
+            Event sampleEvent = new Event("Sample Event", sampleOrganizer.getId(), new Date(Year.now().getValue(), 12, 31), sampleAddress, new EventOption( 10, "5k", 10.0));
             creatEvent(sampleEvent);
         }
 

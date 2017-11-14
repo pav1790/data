@@ -9,10 +9,10 @@
   <div>@event.getAddress.getCity @event.getAddress.getState @event.getAddress.getZip @event.getAddress.getCountry</div>
 
   <h5>Participants Entered</h5>
-  <div>TODO</div>
+  <div>@event.getParticipantIdList.size()</div>
 
   <h5>Event Date</h5>
-  <div>TODO</div>
+  <div>@event.getDate.toString</div>
 
   @* Flash shows updates to a page *@
   @flash.asScala.map{ case (name, value) =>
@@ -38,7 +38,7 @@
         <th>Birthday</th>
         <th>Emergency Contact</th>
         <th>Emergency Contact #</th>
-        <th>Est Finish time</th>
+        <th>SubEvents & Est Finish time</th>
         <th>Shirt Size</th>
       </tr>
     </thead>
@@ -60,7 +60,11 @@
         <td>@participant.getDateOfBirth.getMonth / @participant.getDateOfBirth.getDay / @participant.getDateOfBirth.getYear</td>
         <td>@participant.getEventDetails.get(event.getId).getEmergencyContact</td>
         <td>@participant.getEventDetails.get(event.getId).getEmergencyContactNumber</td>
-        <td>@participant.getEventDetails.get(event.getId).getEstFinishTime</td>
+        <td>
+          @for((key,value) <- participant.getEventDetails.get(event.getId).getSubEventIdsAndTimes) {
+            @event.getEventOptions.get(key).getEventType - @value
+          }
+        </td>
         <td>@participant.getEventDetails.get(event.getId).getShirtSize</td>
       </tr>
     }
@@ -83,6 +87,18 @@
     <fieldset class="form-area">
       <p class="field-left hidden"><label><strong>Event ID</strong> <input style="display: none;" type="text" name="eventReferralId" value="@event.getId" data-validation="required"></label></p>
       <p class="field-left hidden"><label><strong>Event Name</strong> <input type="text" name="eventName" disabled="disabled" value="@event.getTitle"></label></p>
+
+      <div class="input-group"><label class="eventOption"><strong>Event Option</strong>
+        <select name="eventOption" class="select eventOption-input required ">
+          <option value="">
+            Select One
+          </option>
+          @for((key,value) <- event.getEventOptions) {
+            <option value="@key">@value.getEventType - @value.getEventCost</option>
+          }
+        </select></label>
+      </div>
+
       <p class="field-left"><label><strong>Email</strong> <input type="text" name="email" class="text required" maxlength="100" data-validation="required" value=""></label></p>
       <p class="field-left"><label><strong>First Name</strong> <input type="text" name="firstName" class="text required" maxlength="100" data-validation="required" value=""></label></p>
       <p class="field-left col-2"><label><strong>Last Name</strong> <input type="text" name="lastName" class="text required" maxlength="100" value=""></label></p>

@@ -1,6 +1,5 @@
 package dataconnectors;
 
-import models.ParticipantDetails;
 import models.Person;
 
 import java.util.ArrayList;

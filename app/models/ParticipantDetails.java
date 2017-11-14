@@ -1,22 +1,25 @@
 package models;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ParticipantDetails {
 
+    private String eventReferralId;
+    private Map<String, String> subEventIdsAndTimes = new HashMap<>();
     private String shirtSize;
-    private String estFinishTime;
     private boolean wheelChair = false;
     private String emergencyContact;
     private String emergencyContactNumber;
     private String medicalConditions;
-    private String eventReferralId;
     private String runnerBibNumber;
 
 
-    public ParticipantDetails(String eventReferralId, String shirtSize, String estFinishTime, boolean wheelChair, String emergencyContact,
+    public ParticipantDetails(String eventReferralId, String shirtSize, String subEventId, String estFinishTime, boolean wheelChair, String emergencyContact,
                               String emergencyContactNumber, String medicalConditions) {
         this.eventReferralId = eventReferralId;
         this.shirtSize = shirtSize;
-        this.estFinishTime = estFinishTime;
+        this.subEventIdsAndTimes.put(subEventId, estFinishTime);
         this.wheelChair = wheelChair;
         this.emergencyContact = emergencyContact;
         this.emergencyContactNumber = emergencyContactNumber;
@@ -27,8 +30,8 @@ public class ParticipantDetails {
         return shirtSize;
     }
 
-    public String getEstFinishTime() {
-        return estFinishTime;
+    public Map<String, String> getSubEventIdsAndTimes() {
+        return subEventIdsAndTimes;
     }
 
     public boolean isWheelChair() {

@@ -3,6 +3,7 @@ package controllers;
 import dataconnectors.EventDataConnector;
 import dataconnectors.OrganizerDataConnector;
 import dataconnectors.ParticipantDataConnector;
+import helpers.IDMaker;
 import models.*;
 import play.data.Form;
 import play.data.FormFactory;
@@ -11,9 +12,7 @@ import play.mvc.*;
 import javax.inject.Inject;
 
 import java.time.Year;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static play.libs.Scala.asScala;
 
@@ -40,12 +39,13 @@ public class EventController extends Controller {
         // Create sample event
         Address sampleAddress = new Address("Street 1", "Street2", "City", "OH", 43065, "US");
         String organizerId = organizerDataConnector.getAllOrganizers().keySet().iterator().next();
-        Event event = new Event("Sample Event", new Date(Year.now().getValue(), 12, 31), sampleAddress, organizerId, 10, "5k", 20.0);
+        EventOption eventOption = new EventOption(10, "5k", 20.0);
+        Event event = new Event("Sample Event", organizerId, new Date(Year.now().getValue(), 12, 31), sampleAddress,  eventOption);
         eventDataConnector.creatEvent(event);
-
+        System.out.println("Event sub ID: " + event.getEventOptions().keySet().iterator().next());
         // Populate sample event with someone
         Person person = new Person("Joe", "Cooler", new Date(1980,1,1), "joecooler@email.com",
-                "5551236541", "Male", sampleAddress, "Small", "2:30:45", false,
+                "5551236541", "Male", sampleAddress, "Small", event.getEventOptions().keySet().iterator().next(), "2:30:45", false,
                 "E C", "5553216541",  "none", event.getId());
         eventDataConnector.registerParticipant(event.getId(),person);
     }
@@ -64,11 +64,29 @@ public class EventController extends Controller {
         } else {
             EventData data = boundForm.get();
             Address address = new Address(data.getStreet1(), data.getStreet2(), data.getCity(), data.getState(), data.getZip(), data.getCountry());
-            Event event = new Event(data.getTitle(), data.getDate(), address, data.getOrganizerId(), data.getParticipantCap(), data.getEventType(), data.getEventCost());
+            Map<String, EventOption> eventOptionMap = gatherEventOptionsInData(data);
+            Event event = new Event(data.getTitle(), data.getOrganizerId(), data.getDate(), address);
             eventDataConnector.creatEvent(event);
             flash("info", "Event created!");
             return redirect(routes.EventController.viewAllEvents());
         }
+    }
+
+    private Map<String, EventOption> gatherEventOptionsInData(EventData data) {
+        Map<String, EventOption> options = new HashMap<>();
+        // Event Options
+        EventOption option1 = new EventOption(data.getParticipantCap1(), data.getEventType1(), data.getEventCost1());
+        options.put(IDMaker.INSTANCE.getNewID(), option1);
+        if (data.getParticipantCap2() > 0 && !data.getEventType2().isEmpty() && data.getEventCost2() > 0) {
+            EventOption option2 = new EventOption(data.getParticipantCap2(), data.getEventType2(), data.getEventCost2());
+            options.put(IDMaker.INSTANCE.getNewID(), option2);
+            if (data.getParticipantCap3() > 0 && !data.getEventType3().isEmpty() && data.getEventCost3() > 0) {
+                EventOption option3 = new EventOption(data.getParticipantCap3(), data.getEventType3(), data.getEventCost3());
+                options.put(IDMaker.INSTANCE.getNewID(), option3);
+            }
+        }
+
+        return options;
     }
 
     public Result viewEvent(String id) {
@@ -96,7 +114,7 @@ public class EventController extends Controller {
             ParticipantEventData data = boundForm.get();
             Address address = new Address(data.getStreet1(), data.getStreet2(), data.getCity(), data.getState(), data.getZip(), data.getCountry());
             Person person = new Person(data.getFirstName(), data.getLastName(), data.getDateOfBirth(), data.getEmail(), data.getMobileNumber(), data.getGender(),
-                    address, data.getShirtSize(), data.getEstFinishTime(), data.isWheelChair(), data.getEmergencyContact(), data.getEmergencyContactNumber(),
+                    address, data.getShirtSize(), data.getEventOption(), data.getEstFinishTime(), data.isWheelChair(), data.getEmergencyContact(), data.getEmergencyContactNumber(),
                     data.getMedicalConditions(), data.getEventReferralId());
             eventDataConnector.registerParticipant(data.getEventReferralId(), person);
             flash("info", "Event created!");

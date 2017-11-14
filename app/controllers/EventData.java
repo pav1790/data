@@ -32,13 +32,19 @@ public class EventData {
     private String organizerId;
 
     @Constraints.Required
-    private int participantCap;
+    private int participantCap1;
+    private int participantCap2;
+    private int participantCap3;
 
     @Constraints.Required
-    private String eventType;
+    private String eventType1;
+    private String eventType2;
+    private String eventType3;
 
     @Constraints.Required
-    private double eventCost;
+    private double eventCost1;
+    private double eventCost2;
+    private double eventCost3;
 
     @Constraints.Required
     private Date date;
@@ -111,28 +117,76 @@ public class EventData {
         this.organizerId = organizerId;
     }
 
-    public int getParticipantCap() {
-        return participantCap;
+    public int getParticipantCap1() {
+        return participantCap1;
     }
 
-    public void setParticipantCap(int participantCap) {
-        this.participantCap = participantCap;
+    public void setParticipantCap1(int participantCap1) {
+        this.participantCap1 = participantCap1;
     }
 
-    public String getEventType() {
-        return eventType;
+    public int getParticipantCap2() {
+        return participantCap2;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
+    public void setParticipantCap2(int participantCap2) {
+        this.participantCap2 = participantCap2;
     }
 
-    public double getEventCost() {
-        return eventCost;
+    public int getParticipantCap3() {
+        return participantCap3;
     }
 
-    public void setEventCost(double eventCost) {
-        this.eventCost = eventCost;
+    public void setParticipantCap3(int participantCap3) {
+        this.participantCap3 = participantCap3;
+    }
+
+    public String getEventType1() {
+        return eventType1;
+    }
+
+    public void setEventType1(String eventType1) {
+        this.eventType1 = eventType1;
+    }
+
+    public String getEventType2() {
+        return eventType2;
+    }
+
+    public void setEventType2(String eventType2) {
+        this.eventType2 = eventType2;
+    }
+
+    public String getEventType3() {
+        return eventType3;
+    }
+
+    public void setEventType3(String eventType3) {
+        this.eventType3 = eventType3;
+    }
+
+    public double getEventCost1() {
+        return eventCost1;
+    }
+
+    public void setEventCost1(double eventCost1) {
+        this.eventCost1 = eventCost1;
+    }
+
+    public double getEventCost2() {
+        return eventCost2;
+    }
+
+    public void setEventCost2(double eventCost2) {
+        this.eventCost2 = eventCost2;
+    }
+
+    public double getEventCost3() {
+        return eventCost3;
+    }
+
+    public void setEventCost3(double eventCost3) {
+        this.eventCost3 = eventCost3;
     }
 
     public Date getDate() {
