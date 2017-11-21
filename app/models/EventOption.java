@@ -1,6 +1,7 @@
 package models;
 
 public class EventOption {
+
     private int participantCap;
     private String eventType;
     private double eventCost;

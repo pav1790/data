@@ -1,12 +1,15 @@
 package models;
 
-import helpers.IDMaker;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Organizer {
 
-    private String id;
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -16,7 +19,6 @@ public class Organizer {
     private String editKey = "secretKey";
 
     public Organizer(String firstName, String lastName, String email, String mobileNumber, Address address) {
-        this.id = IDMaker.INSTANCE.getNewID();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -24,7 +26,7 @@ public class Organizer {
         this.address = address;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

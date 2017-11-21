@@ -1,7 +1,10 @@
 package models;
 
-import helpers.IDMaker;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,9 +12,12 @@ import java.util.Map;
 /**
  * Contains data on a typical person
  */
-public class Person {
+@Entity
+public class Person implements Serializable {
 
-    private final String id;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
     private String firstName;
     private String lastName;
     private Date dateOfBirth;
@@ -32,7 +38,6 @@ public class Person {
      * @param address
      */
     public Person(String firstName, String lastName, Date dateOfBirth, String email, String mobileNumber, String gender, Address address) {
-        this.id = IDMaker.INSTANCE.getNewID();
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -58,7 +63,7 @@ public class Person {
         return true;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

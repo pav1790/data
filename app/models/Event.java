@@ -1,22 +1,26 @@
 package models;
 
-import helpers.IDMaker;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.*;
 
+@Entity
 public class Event {
 
-    private String id;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
     private String title;
     private Date date;
     private Address address;
     private String organizerId;
-    private Map<String, EventOption> eventOptions;
+    private Map<Integer, EventOption> eventOptions;
     private final String editKey = "secretKey";
-    private List<String> participantIds;
+    private List<Long> participantIds;
 
     private Event(String title, String organizerId, Date date, Address address) {
-        this.id = IDMaker.INSTANCE.getNewID();
         this.title = title;
         this.date = date;
         this.address = address;
@@ -29,18 +33,18 @@ public class Event {
         if (eventOptions.length == 0) {
             throw new RuntimeException("Expected Event Options but got none");
         }
-        Map<String, EventOption> eventOptionsMap = new HashMap<>();
+        Map<Integer, EventOption> eventOptionsMap = new HashMap<>();
         for (EventOption eventOption: eventOptions) {
-            eventOptionsMap.put(IDMaker.INSTANCE.getNewID(), eventOption);
+            eventOptionsMap.put(eventOptionsMap.size()+1, eventOption);
         }
         this.eventOptions = eventOptionsMap;
     }
 
-    public Event(String title, String organizerId, Date date, Address address, Map<String, EventOption> eventOptions) {
+    public Event(String title, String organizerId, Date date, Address address, Map<Integer, EventOption> eventOptions) {
         this.eventOptions = eventOptions;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -60,11 +64,11 @@ public class Event {
         return organizerId;
     }
 
-    public Map<String, EventOption> getEventOptions() {
+    public Map<Integer, EventOption> getEventOptions() {
         return eventOptions;
     }
 
-    public void updateEventOption(String optionId, EventOption eventOption) {
+    public void updateEventOption(Integer optionId, EventOption eventOption) {
         this.eventOptions.put(optionId, eventOption);
     }
 
@@ -76,7 +80,7 @@ public class Event {
         return true;
     }
 
-    public List<String> getParticipantIdList() {
+    public List<Long> getParticipantIdList() {
         return this.participantIds;
     }
 

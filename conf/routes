@@ -7,6 +7,7 @@ GET     /                               controllers.HomeController.index
 
 # Events
 GET     /events                         controllers.EventController.viewAllEvents
+POST    /events/                  controllers.EventController.createEvent
 POST    /events/create                  controllers.EventController.createEvent
 
 GET     /events/:id                     controllers.EventController.viewEvent(id)
@@ -14,9 +15,11 @@ POST    /events/:id/edit                controllers.EventController.editEventDat
 POST    /events/:id/participants/add    controllers.EventController.addParticipant(id)
 
 GET     /participants                   controllers.ParticipantController.viewAllParticipants
+POST    /participants                   controllers.ParticipantController.createParticipant
 POST    /participants/create            controllers.ParticipantController.createParticipant
 
 GET     /organizers                     controllers.OrganizerController.viewAllOrganizers
+POST    /organizers                     controllers.OrganizerController.createOrganizer
 POST    /organizers/create              controllers.OrganizerController.createOrganizer
 
 

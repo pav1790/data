@@ -1,9 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ParticipantDetails {
+public class ParticipantDetails implements Serializable {
 
     private String eventReferralId;
     private Map<String, String> subEventIdsAndTimes = new HashMap<>();
